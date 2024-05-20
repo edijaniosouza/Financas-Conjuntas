@@ -9,6 +9,7 @@ fun NavigationSetup() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = LOGIN_SCREEN) {
-        loginScreen()
+        loginScreen { navController.navigate(CREATE_ACCOUNT_ROUTE) }
+        createAccountScreen()
     }
 }

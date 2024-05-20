@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Finanças Conjuntas</string>
-    <string name="enter">ENTRAR</string>
+    <string name="enter">Entrar</string>
+    <string name="rememberme">Lembrar-me</string>
+    <string name="password">Senha</string>
+    <string name="email">E-mail</string>
+    <string name="if_with_problems_reset_password">Esta com problemas? Resete sua senha</string>
+    <string name="empty_field">Campo vazio</string>
+    <string name="invalid_email">E-mail inválido</string>
+    <string name="invalid_password">Senha Inválida</string>
+    <string name="name">Nome</string>
+    <string name="agree_with_terms">Concordo e Aceito os termos do contrato</string>
+    <string name="signUp">Cadastrar</string>
+    <string name="password_short">Senha deve conter no minimo 6 digitos</string>
+    <string name="password_not_equal">Senhas diferentes</string>
+    <string name="confirmPassword">Confirme sua senha</string>
+    <string name="nameTooShort">Nome muito curto</string>
 </resources>
