@@ -15,4 +15,5 @@
     <string name="password_not_equal">Senhas diferentes</string>
     <string name="confirmPassword">Confirme sua senha</string>
     <string name="nameTooShort">Nome muito curto</string>
+    <string name="web_client_id">30960615747-jhd0698ts1io8cco99naicb02ddsaubk.apps.googleusercontent.com</string>
 </resources>

@@ -2,7 +2,10 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
+//    id("com.google.gms.google-services")
+    alias(libs.plugins.gms.google.services)
 }
+
 
 android {
     namespace = "com.barrosedijanio.finanasconjuntas"
@@ -69,4 +72,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation (libs.koin.androidx.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(platform(libs.firebase.bom))
+    //noinspection UseTomlInstead
+    implementation("com.google.firebase:firebase-auth")
+    implementation(libs.play.services.auth)
+    implementation("com.google.firebase:firebase-firestore")
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 }

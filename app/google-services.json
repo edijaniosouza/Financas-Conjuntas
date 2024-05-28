@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "30960615747",
+    "project_id": "financas-conjuntas",
+    "storage_bucket": "financas-conjuntas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30960615747:android:f7756a0782cd6810beaff6",
+        "android_client_info": {
+          "package_name": "com.barrosedijanio.finanasconjuntas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30960615747-nku8rglsvkcpmqrobkkcj2l3vpr2be56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.barrosedijanio.finanasconjuntas",
+            "certificate_hash": "3a028d11f399321bcc445ba7b80a108ccdd813b9"
+          }
+        },
+        {
+          "client_id": "30960615747-jhd0698ts1io8cco99naicb02ddsaubk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuEzAPvT64uHgd75P-sXb0EfTo8nTecZk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30960615747-jhd0698ts1io8cco99naicb02ddsaubk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
