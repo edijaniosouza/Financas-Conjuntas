@@ -1,16 +1,19 @@
 package com.barrosedijanio.finanasconjuntas.firebase.data.transactions
 
 import android.util.Log
+import com.barrosedijanio.finanasconjuntas.core.generics.Result
+import com.barrosedijanio.finanasconjuntas.core.helpers.stringToTimestamp
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.FIREBASEDATA
+import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
-import com.google.android.gms.tasks.Task
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Date
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 
 const val DATA = "data"
 const val TRANSACTIONS = "transactions"
@@ -25,13 +28,10 @@ class TransactionRepositoryImpl(
     private val dataCollection = firestore.collection(DATA)
     private val userId = auth.currentUser?.uid
     private val userIdDocument = userId?.let { dataCollection.document(it) }
-    private val timeNow: Date = Timestamp.now().toDate()
-    override suspend fun newTransaction(transaction: Transaction) {
-        if (transaction.isIncome) createIncome(transaction)
-        else createExpense(transaction)
-    }
 
-    fun createIncome(transaction: Transaction) {
+    override fun newTransaction(transaction: Transaction) = flow {
+        emit(Result.Loading)
+
         balanceRepository.updateBalance(
             transaction.value,
             transaction.isIncome,
@@ -40,34 +40,26 @@ class TransactionRepositoryImpl(
         )
 
         createInFirestore(
-            timeNow = timeNow,
             model = transaction,
             collection = TRANSACTIONS,
-            onCompleteListener = {},
-            onFailureListener = {})
-
-    }
-
-    fun createExpense(transaction: Transaction) {
-
-    }
-
-    override suspend fun allTransactions(
-        onCompleteListener: (List<Transaction>) -> Unit,
-    ) {
-        val transactions = mutableListOf<Transaction>()
-        userIdDocument?.collection(TRANSACTIONS)?.orderBy("paidDate")
-            ?.get()
-            ?.addOnCompleteListener { querySnapshot ->
-                if (querySnapshot.isSuccessful) {
-                    querySnapshot.result.documents.forEach { data ->
-                        transactions.add(
-                            documentSnapshotToTransaction(data)
-                        )
-                    }
-                    onCompleteListener(transactions)
-                }
+        ).collect { result ->
+            result?.let {
+                emit(it)
             }
+        }
+    }
+
+    override suspend fun allTransactions() = flow<List<Transaction>> {
+        val transactions = mutableListOf<Transaction>()
+        val list = userIdDocument?.collection(TRANSACTIONS)?.orderBy("paidDate")
+            ?.get()?.await()
+
+        list?.documents?.forEach {
+            transactions.add(
+                documentSnapshotToTransaction(it)
+            )
+            emit(transactions)
+        }
     }
 
     fun getTransactionByType(isIncome: Boolean) {
@@ -94,14 +86,17 @@ class TransactionRepositoryImpl(
     }
 
     private fun createInFirestore(
-        timeNow: Date,
         model: Any,
         collection: String,
-        onCompleteListener: (Task<Void>) -> Unit,
-        onFailureListener: (Exception) -> Unit,
-    ) {
-        userIdDocument
-            ?.collection(collection)?.add(model)
+    ) = flow {
+        emit(Result.Loading)
+        try {
+            userIdDocument
+                ?.collection(collection)?.add(model)?.await()
+            emit(Result.OK)
+        } catch (e: CancellationException) {
+            emit(e.message?.let { Result.Error(it) })
+        }
     }
 
     private fun documentSnapshotToTransaction(data: DocumentSnapshot): Transaction {
@@ -115,7 +110,10 @@ class TransactionRepositoryImpl(
                 ),
                 description = data["description"].toString(),
                 value = data["value"].toString().toFloat(),
-                isIncome = data["income"].toString().toBoolean()
+                isIncome = data["income"].toString().toBoolean(),
+                paid = data["paid"].toString().toBoolean(),
+//                paidDate = stringToTimestamp(data["paidDate"].toString()),
+                accountType = AccountType.valueOf(data["accountType"].toString())
             )
         } catch (e: Exception) {
             throw IllegalArgumentException("Erro ao converter o objeto Transaction")

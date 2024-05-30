@@ -6,24 +6,25 @@ import com.barrosedijanio.finanasconjuntas.core.generics.Result
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.ExpenseUiState
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.IncomeUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NewExpenseViewModel(
+class NewIncomeViewModel(
     private val repository: TransactionRepositoryImpl
 ) : ViewModel() {
 
-    private var _uiState = MutableStateFlow(ExpenseUiState())
+    private var _uiState = MutableStateFlow(IncomeUiState())
     var uiState = _uiState.asStateFlow()
 
     init {
         _uiState.update { currentState ->
             currentState.copy(
-                onPaidChange = { newValue ->
+                onReceivedChange = { newValue ->
                     _uiState.update {
-                        it.copy(isPaid = newValue)
+                        it.copy(isReceived = newValue)
                     }
                 },
                 onValueChange = { value ->
@@ -83,18 +84,18 @@ class NewExpenseViewModel(
     private var _result = MutableStateFlow<Result>(Result.Empty)
     val result = _result.asStateFlow()
 
-    fun addExpense() {
+    fun addIncome() {
 
         lateinit var transaction: Transaction
         try {
             transaction = Transaction(
-                paid = uiState.value.isPaid,
+                paid = uiState.value.isReceived,
                 paidDate = uiState.value.paymentDate,
                 value = uiState.value.value.toFloat(),
                 description = uiState.value.description,
                 category = uiState.value.category,
                 accountType = uiState.value.account,
-                isIncome = false,
+                isIncome = true,
                 )
         } catch (e: Exception) {
             _result.value = Result.Error("Erro ao criar transação")

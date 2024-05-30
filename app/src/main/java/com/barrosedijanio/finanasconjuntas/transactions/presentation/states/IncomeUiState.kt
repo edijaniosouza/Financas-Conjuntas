@@ -6,11 +6,11 @@ import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.google.firebase.Timestamp
 import java.util.Date
 
-data class ExpenseUiState(
+data class IncomeUiState(
     var value: String = "",
     var onValueChange: (String) -> Unit = {},
-    var isPaid: Boolean = false,
-    var onPaidChange: (Boolean) -> Unit = {},
+    var isReceived: Boolean = false,
+    var onReceivedChange: (Boolean) -> Unit = {},
     var description: String = "",
     var onDescriptionChange: (String) -> Unit = {},
     var paymentDate: Timestamp = Timestamp.now(),

@@ -15,6 +15,7 @@ import com.barrosedijanio.finanasconjuntas.core.components.NavigationBarDefault
 import com.barrosedijanio.finanasconjuntas.home.presentation.navigation.homeScreen
 import com.barrosedijanio.finanasconjuntas.transactions.navigation.newExpenseScreen
 import com.barrosedijanio.finanasconjuntas.statement.presentation.navigation.statementScreen
+import com.barrosedijanio.finanasconjuntas.transactions.navigation.newIncomeScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -36,7 +37,7 @@ fun Navigation() {
         floatingActionButton = {
             if (currentRoute !in listOfNonNavItems) {
                 FabAppDefault(
-                    onCreateNewIncome = { /*TODO*/ },
+                    onCreateNewIncome = { navController.navigate(Screens.Income.route) },
                     onCreateNewExpense = { navController.navigate(Screens.Expense.route) },
                     onAccountTransfer = {})
             }
@@ -58,6 +59,9 @@ fun Navigation() {
             homeScreen()
             statementScreen()
             newExpenseScreen{
+                navController.popBackStack()
+            }
+            newIncomeScreen{
                 navController.popBackStack()
             }
         }

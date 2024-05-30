@@ -64,6 +64,7 @@ import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.components.TextFieldDropDownAppDefault
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.ExpenseUiState
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.IncomeUiState
 import com.barrosedijanio.finanasconjuntas.transactions.util.millisecondsToDateString
 import com.barrosedijanio.finanasconjuntas.transactions.util.millisecondsToTimestamp
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
@@ -76,9 +77,9 @@ import java.util.TimeZone
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewExpenseScreen(
+fun NewIncomeScreen(
     results: Result,
-    uiState: ExpenseUiState,
+    uiState: IncomeUiState,
     onNavigateBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
 ) {
@@ -108,7 +109,7 @@ fun NewExpenseScreen(
         CenterAlignedTopAppBar(
             title = {
                 Text(
-                    "Nova Despesa",
+                    "Nova Receita",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = robotoFontFamily,
@@ -183,19 +184,19 @@ fun NewExpenseScreen(
                 }
 
                 Row(
-                    modifier = Modifier.weight(0.3f),
+                    modifier = Modifier.weight(0.3f).padding(start = 10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
                     Text(
-                        text = "Pago",
+                        text = "Recebido",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.SemiBold,
                         fontFamily = openSansFontFamily
                     )
                     Checkbox(
-                        checked = uiState.isPaid,
-                        onCheckedChange = { uiState.onPaidChange(it) })
+                        checked = uiState.isReceived,
+                        onCheckedChange = { uiState.onReceivedChange(it) })
                 }
             }
 
@@ -369,7 +370,7 @@ fun NewExpenseScreen(
                 .fillMaxWidth()
                 .padding(30.dp),
             onClick = {
-                if (uiState.description == "" && uiState.value == "" && uiState.category.name == "") {
+                if (uiState.description == "" ||  uiState.value == "" || uiState.category.name == "") {
                     Toast.makeText(context, "Preencha os campos obrigatórios", Toast.LENGTH_SHORT)
                         .show()
                     return@Button

@@ -1,5 +1,7 @@
 package com.barrosedijanio.finanasconjuntas.statement.presentation.navigation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.barrosedijanio.finanasconjuntas.core.navigation.Screens
@@ -10,7 +12,7 @@ import org.koin.androidx.compose.koinViewModel
 fun NavGraphBuilder.statementScreen() {
     composable(Screens.Statement.route) {
         val viewModel: StatementViewModel = koinViewModel()
-
-        StatementScreen()
+        val transactions by viewModel.transactions.collectAsState()
+        StatementScreen(transactions)
     }
 }

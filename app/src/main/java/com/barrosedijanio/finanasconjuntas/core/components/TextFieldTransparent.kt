@@ -22,13 +22,19 @@ fun TextFieldTransparent(
     modifier: Modifier = Modifier,
     value: String,
     placeholder: String,
-    icon: Painter = painterResource(id = R.drawable.baseline_short_text_24),
+    leadingIcon: @Composable() (() -> Unit)? = { Icon(
+        painter = painterResource(id = R.drawable.baseline_short_text_24),
+        contentDescription = null
+    )},
+    //Painter = painterResource(id = R.drawable.baseline_short_text_24),
     trailingIcon: @Composable() (() -> Unit)? = null,
     enable: Boolean = true,
     onValueChange: (String) -> Unit
 ) {
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
     ) {
         OutlinedTextField(
             modifier = modifier.fillMaxWidth(),
@@ -36,7 +42,7 @@ fun TextFieldTransparent(
             onValueChange = onValueChange,
             enabled = enable,
             label = { Text(placeholder) },
-            leadingIcon = { Icon(painter = icon, contentDescription = "Text Field Icon")},
+            leadingIcon = leadingIcon,
             colors = TextFieldDefaults.colors(
                 unfocusedContainerColor = Color.Transparent,
                 focusedContainerColor = Color.Transparent,

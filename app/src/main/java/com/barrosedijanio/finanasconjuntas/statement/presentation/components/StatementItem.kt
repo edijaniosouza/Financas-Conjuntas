@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Divider
@@ -20,19 +21,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
+import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 
 
 @Composable
-fun StatementItem() {
+fun StatementItem(
+    transaction: Transaction
+) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp),
+            .padding(15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -45,15 +52,15 @@ fun StatementItem() {
                     .background(Color(0xFF4FA386), shape = CircleShape)
                     .padding(5.dp)
                     .size(25.dp),
-                imageVector = Icons.Default.Home,
-                contentDescription = "Icone da categoria"
+                painter = painterResource(id = R.drawable.baseline_category_24),
+                contentDescription = "Categoria"
             )
             Column(
                 Modifier.padding(horizontal = 10.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Descrição",
+                    transaction.description,
                     fontSize = 14.sp,
                     fontFamily = openSansFontFamily,
                     fontWeight = FontWeight.Bold
@@ -64,7 +71,7 @@ fun StatementItem() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Categoria",
+                        text = transaction.category.name,
                         fontSize = 12.sp,
                         fontFamily = openSansFontFamily,
                         fontWeight = FontWeight.Normal
@@ -75,7 +82,7 @@ fun StatementItem() {
                             .width(8.dp)
                     )
                     Text(
-                        text = "Carteira",
+                        text = transaction.accountType.name,
                         fontSize = 12.sp,
                         fontFamily = openSansFontFamily,
                         fontWeight = FontWeight.Normal
@@ -88,13 +95,15 @@ fun StatementItem() {
             horizontalAlignment = Alignment.End
         ) {
             Text(
-                "R$ 45,00",
+                "R$ ${transaction.value}",
                 fontSize = 14.sp,
                 fontFamily = openSansFontFamily,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = if (transaction.isIncome) Color(0xFF12A818) else Color(0xFFA81212)
             )
+
             Icon(
-                imageVector = Icons.Filled.CheckCircle,
+                imageVector = if (transaction.paid) Icons.Filled.CheckCircle else Icons.Filled.Check,
                 contentDescription = "Icone despesa paga"
             )
         }
@@ -104,5 +113,5 @@ fun StatementItem() {
 @Preview
 @Composable
 private fun StatementItemPreview() {
-    StatementItem()
+    StatementItem(Transaction(description = "", value = 1f, category = Category("", 0)))
 }

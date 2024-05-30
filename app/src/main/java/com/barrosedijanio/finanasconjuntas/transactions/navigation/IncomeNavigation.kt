@@ -6,22 +6,24 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.barrosedijanio.finanasconjuntas.core.navigation.Screens
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.screens.NewExpenseScreen
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.screens.NewIncomeScreen
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.viewmodel.NewExpenseViewModel
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.viewmodel.NewIncomeViewModel
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.newExpenseScreen(
+fun NavGraphBuilder.newIncomeScreen(
     onNavigateBack: () -> Unit
 ) {
-    composable(Screens.Expense.route) {
-        val viewModel: NewExpenseViewModel = koinViewModel()
+    composable(Screens.Income.route) {
+        val viewModel: NewIncomeViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsState()
         val results by viewModel.result.collectAsState()
 
-        NewExpenseScreen(
+        NewIncomeScreen(
             results,
             uiState, onNavigateBack
         ) {
-            viewModel.addExpense()
+            viewModel.addIncome()
         }
     }
 }

@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val statementModule = module {
     viewModel <StatementViewModel>{
-        StatementViewModel()
+        StatementViewModel(get())
     }
 }
