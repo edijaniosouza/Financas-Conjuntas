@@ -4,7 +4,7 @@ import com.google.firebase.Timestamp
 import java.util.Date
 
 data class Transaction(
-    val id: Int = Timestamp.now().nanoseconds, // Utilizado como ID
+    val id: Int = Timestamp.now().nanoseconds,
     val paid: Boolean = false,
     val paidDate: Timestamp? = Timestamp.now(),
     val description: String,

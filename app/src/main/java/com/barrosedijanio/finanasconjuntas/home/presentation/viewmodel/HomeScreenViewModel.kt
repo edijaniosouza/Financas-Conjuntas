@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
+import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
+import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Balance
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
@@ -25,19 +28,19 @@ class HomeScreenViewModel(
     var list = _list.asStateFlow()
     fun readData() {
         try {
-            databaseRepo.allTransactions { list ->
-                _list.value = list
-                Log.i("firebaseData", "readData: ${_list.value}")
-            }
+//            databaseRepo.allTransactions { list ->
+//                _list.value = list
+//                Log.i("firebaseData", "viewmodel - readData: ${_list.value}")
+//            }
 
         } catch (e: Exception) {
-            Log.e("firebaseError", "readData: ${e.message}")
+            Log.e("firebaseError", "viewmodel - readData: ${e.message}")
         }
     }
 
     fun getAccountBalance() {
         viewModelScope.launch {
-            balanceRepo.getBalance(){}
+            balanceRepo.getBalance(AccountType.CARTEIRA) {}
         }
     }
 
@@ -71,7 +74,9 @@ class HomeScreenViewModel(
             value = 150.53f,
             isIncome = true,
         )
-        databaseRepo.newTransaction(transaction)
+        viewModelScope.launch {
+            databaseRepo.newTransaction(transaction)
+        }
 //        databaseRepo.newIncome(transaction)
     }
 }

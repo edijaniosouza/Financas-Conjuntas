@@ -24,4 +24,4 @@ val listOfNavItems = listOf<NavItem>(
     ),
 )
 
-val listOfNonNavItems = listOf(Screens.SignIn.route, Screens.SignUp.route)
+val listOfNonNavItems = listOf(Screens.SignIn.route, Screens.SignUp.route, Screens.Expense.route)

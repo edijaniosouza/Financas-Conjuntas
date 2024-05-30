@@ -74,6 +74,7 @@ fun FabAppDefault(
                     contentColor = Color(0xFFFF0000),
                     borderColor = Color(0xFFFFAFAF),
                     onClick = {
+                        fabOpen = false
                         onCreateNewExpense()
                     }
                 )

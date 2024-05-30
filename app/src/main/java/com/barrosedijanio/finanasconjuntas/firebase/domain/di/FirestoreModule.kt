@@ -1,6 +1,8 @@
 package com.barrosedijanio.finanasconjuntas.firebase.domain.di
 
+import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
+import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
 import com.google.firebase.firestore.FirebaseFirestore
 import org.koin.dsl.module

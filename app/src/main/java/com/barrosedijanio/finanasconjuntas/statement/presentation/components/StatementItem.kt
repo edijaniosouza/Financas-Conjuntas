@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
@@ -36,7 +37,9 @@ fun StatementItem() {
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
                 modifier = Modifier
                     .background(Color(0xFF4FA386), shape = CircleShape)
@@ -51,7 +54,7 @@ fun StatementItem() {
             ) {
                 Text(
                     "Descrição",
-                    fontSize = 10.sp,
+                    fontSize = 14.sp,
                     fontFamily = openSansFontFamily,
                     fontWeight = FontWeight.Bold
                 )
@@ -62,7 +65,7 @@ fun StatementItem() {
                 ) {
                     Text(
                         text = "Categoria",
-                        fontSize = 8.sp,
+                        fontSize = 12.sp,
                         fontFamily = openSansFontFamily,
                         fontWeight = FontWeight.Normal
                     )
@@ -73,7 +76,7 @@ fun StatementItem() {
                     )
                     Text(
                         text = "Carteira",
-                        fontSize = 8.sp,
+                        fontSize = 12.sp,
                         fontFamily = openSansFontFamily,
                         fontWeight = FontWeight.Normal
                     )
@@ -86,7 +89,7 @@ fun StatementItem() {
         ) {
             Text(
                 "R$ 45,00",
-                fontSize = 10.sp,
+                fontSize = 14.sp,
                 fontFamily = openSansFontFamily,
                 fontWeight = FontWeight.SemiBold
             )
@@ -96,4 +99,10 @@ fun StatementItem() {
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun StatementItemPreview() {
+    StatementItem()
 }

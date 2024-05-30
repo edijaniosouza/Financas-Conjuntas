@@ -122,11 +122,11 @@ class SignUpViewModel(
         }
     }
 
-    private val _Result = MutableStateFlow<Result>(Result.Empty)
-    val responseResult = _Result.asStateFlow()
+    private val _result = MutableStateFlow<Result>(Result.Empty)
+    val responseResult = _result.asStateFlow()
     fun createUser(email: String, password: String, username: String) {
         authRepositoryImpl.signUpWithEmailAndPassword(email, password, username){
-            _Result.value = it
+            _result.value = it
         }
     }
 }

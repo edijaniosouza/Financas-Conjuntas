@@ -26,19 +26,18 @@ class TransactionRepositoryImpl(
     private val userId = auth.currentUser?.uid
     private val userIdDocument = userId?.let { dataCollection.document(it) }
     private val timeNow: Date = Timestamp.now().toDate()
-    override fun newTransaction(transaction: Transaction) {
-
-        if (transaction.isIncome) createIncome(transaction) else createExpense(transaction)
-//        createInFirestore(
-//            timeNow = timeNow,
-//            model = transaction,
-//            collection = TRANSACTIONS,
-//            onCompleteListener = {},
-//            onFailureListener = {})
+    override suspend fun newTransaction(transaction: Transaction) {
+        if (transaction.isIncome) createIncome(transaction)
+        else createExpense(transaction)
     }
 
-    fun createIncome(transaction: Transaction){
-        balanceRepository.updateBalance(transaction.value, transaction.isIncome, transaction.shared)
+    fun createIncome(transaction: Transaction) {
+        balanceRepository.updateBalance(
+            transaction.value,
+            transaction.isIncome,
+            transaction.shared,
+            transaction.accountType
+        )
 
         createInFirestore(
             timeNow = timeNow,
@@ -49,14 +48,13 @@ class TransactionRepositoryImpl(
 
     }
 
-    fun createExpense(transaction: Transaction){
+    fun createExpense(transaction: Transaction) {
 
     }
 
-    override fun allTransactions(
+    override suspend fun allTransactions(
         onCompleteListener: (List<Transaction>) -> Unit,
     ) {
-        getTransactionByType(true)
         val transactions = mutableListOf<Transaction>()
         userIdDocument?.collection(TRANSACTIONS)?.orderBy("paidDate")
             ?.get()
@@ -87,11 +85,11 @@ class TransactionRepositoryImpl(
             }
     }
 
-    override fun updateTransaction(transaction: Transaction) {
+    override suspend fun updateTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteTransaction(transaction: Transaction) {
+    override suspend fun deleteTransaction(transaction: Transaction) {
         TODO("Not yet implemented")
     }
 

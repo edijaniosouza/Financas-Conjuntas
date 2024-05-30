@@ -13,6 +13,7 @@ import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.signUpSc
 import com.barrosedijanio.finanasconjuntas.core.components.FabAppDefault
 import com.barrosedijanio.finanasconjuntas.core.components.NavigationBarDefault
 import com.barrosedijanio.finanasconjuntas.home.presentation.navigation.homeScreen
+import com.barrosedijanio.finanasconjuntas.transactions.navigation.newExpenseScreen
 import com.barrosedijanio.finanasconjuntas.statement.presentation.navigation.statementScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -36,7 +37,7 @@ fun Navigation() {
             if (currentRoute !in listOfNonNavItems) {
                 FabAppDefault(
                     onCreateNewIncome = { /*TODO*/ },
-                    onCreateNewExpense = { /*TODO*/ },
+                    onCreateNewExpense = { navController.navigate(Screens.Expense.route) },
                     onAccountTransfer = {})
             }
         }
@@ -56,6 +57,9 @@ fun Navigation() {
             }
             homeScreen()
             statementScreen()
+            newExpenseScreen{
+                navController.popBackStack()
+            }
         }
     }
 
