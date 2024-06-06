@@ -2,7 +2,6 @@ package com.barrosedijanio.finanasconjuntas.firebase.data.transactions
 
 import android.util.Log
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
-import com.barrosedijanio.finanasconjuntas.core.helpers.stringToTimestamp
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.FIREBASEDATA
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
@@ -11,9 +10,12 @@ import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 
 const val DATA = "data"
 const val TRANSACTIONS = "transactions"
@@ -51,7 +53,7 @@ class TransactionRepositoryImpl(
 
     override suspend fun allTransactions() = flow<List<Transaction>> {
         val transactions = mutableListOf<Transaction>()
-        val list = userIdDocument?.collection(TRANSACTIONS)?.orderBy("paidDate")
+        val list = userIdDocument?.collection(TRANSACTIONS)?.orderBy("paidDate", Query.Direction.DESCENDING)
             ?.get()?.await()
 
         list?.documents?.forEach {
@@ -62,19 +64,37 @@ class TransactionRepositoryImpl(
         }
     }
 
-    fun getTransactionByType(isIncome: Boolean) {
-        userIdDocument?.collection(TRANSACTIONS)?.whereEqualTo("income", isIncome)?.get()
-            ?.addOnCompleteListener { querySnapshot ->
-                if (querySnapshot.isSuccessful) {
-                    Log.i(FIREBASEDATA, "getTransactionByType: ${querySnapshot.result.documents}")
-                    querySnapshot.result.forEach { data ->
-                        Log.i(
-                            FIREBASEDATA,
-                            "getTransactionByType: id: ${data["id"]} - value: ${data["value"]}"
-                        )
-                    }
-                }
-            }
+    override suspend fun getTransactionByType(isIncome: Boolean) = flow<List<Transaction>> {
+        val transactions = mutableListOf<Transaction>()
+        val list =
+            userIdDocument?.collection(TRANSACTIONS)?.whereEqualTo("income", isIncome)?.get()
+                ?.await()
+
+        list?.documents?.forEach {
+            transactions.add(
+                documentSnapshotToTransaction(it)
+            )
+            emit(transactions)
+        }
+    }
+
+    override suspend fun getTransactionByPeriod(period: Long): Flow<List<Transaction>> = flow {
+        val transactions = mutableListOf<Transaction>()
+        val days = 86400000*period
+        val limitDate = Date().time - days
+
+        val list = userIdDocument?.collection(TRANSACTIONS)
+            ?.orderBy("paidDate", Query.Direction.DESCENDING)
+            ?.whereGreaterThan("paidDate", limitDate)
+            ?.get()
+            ?.await()
+
+        list?.documents?.forEach {
+            transactions.add(
+                documentSnapshotToTransaction(it)
+            )
+            emit(transactions)
+        }
     }
 
     override suspend fun updateTransaction(transaction: Transaction) {
@@ -103,7 +123,6 @@ class TransactionRepositoryImpl(
         val newTransaction: Transaction
         try {
             newTransaction = Transaction(
-                id = data["id"].toString().toInt(),
                 category = Category(
                     icon = data["category.icon"].toString().toInt(),
                     name = data["category.name"].toString()
@@ -112,7 +131,7 @@ class TransactionRepositoryImpl(
                 value = data["value"].toString().toFloat(),
                 isIncome = data["income"].toString().toBoolean(),
                 paid = data["paid"].toString().toBoolean(),
-//                paidDate = stringToTimestamp(data["paidDate"].toString()),
+                paidDate = data["paidDate"].toString().toLong(),
                 accountType = AccountType.valueOf(data["accountType"].toString())
             )
         } catch (e: Exception) {

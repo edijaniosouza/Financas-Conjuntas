@@ -23,6 +23,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -58,7 +59,7 @@ fun SignInScreen(
         Modifier
             .fillMaxSize()
             .padding(horizontal = 25.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             modifier = Modifier
@@ -176,11 +177,11 @@ fun SignInScreen(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(vertical = 40.dp),
+                .padding(vertical = 20.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .width(144.dp)
                     .padding(horizontal = 10.dp),
@@ -192,7 +193,7 @@ fun SignInScreen(
                 fontSize = 10.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            Divider(
+            HorizontalDivider(
                 modifier = Modifier
                     .width(144.dp)
                     .padding(horizontal = 10.dp),

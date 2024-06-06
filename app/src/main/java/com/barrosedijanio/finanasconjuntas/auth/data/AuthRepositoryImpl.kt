@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.auth.domain.model.User
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -83,6 +84,10 @@ class AuthRepositoryImpl(
         } catch (e: Exception){
             null
         }
+    }
+
+    fun insertUserIntoDatabase(user: FirebaseUser){
+
     }
 
     override fun signOut() {

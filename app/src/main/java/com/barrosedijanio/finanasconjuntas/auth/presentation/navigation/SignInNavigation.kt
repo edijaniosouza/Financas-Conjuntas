@@ -12,7 +12,7 @@ import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.signInScreen(
     goToCreateAccount: () -> Unit,
-    goToHome: (User) -> Unit,
+    goToHome: () -> Unit,
 ) {
     composable(Screens.SignIn.route) {
         val loginViewModel: SignInViewModel = koinViewModel()
@@ -21,14 +21,13 @@ fun NavGraphBuilder.signInScreen(
         SignInScreen(
             uiState = uiState,
             goToGoogleAuth = {context ->
-                loginViewModel.signInWithGoogle(context){user ->
-//                    goToHome(user)
+                loginViewModel.signInWithGoogle(context){_ ->
+                    goToHome()
                 }
             },
             goToHome = { email, password, _ ->
-                /*TODO: Home*/
-                loginViewModel.signIn(email, password){user ->
-                    goToHome(user)
+                loginViewModel.signIn(email, password){ _ ->
+                    goToHome()
                 }
 
             },

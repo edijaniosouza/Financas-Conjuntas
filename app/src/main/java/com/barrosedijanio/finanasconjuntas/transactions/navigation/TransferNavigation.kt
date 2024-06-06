@@ -5,23 +5,21 @@ import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.barrosedijanio.finanasconjuntas.core.navigation.Screens
-import com.barrosedijanio.finanasconjuntas.transactions.presentation.screens.NewExpenseScreen
-import com.barrosedijanio.finanasconjuntas.transactions.presentation.viewmodel.NewExpenseViewModel
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.screens.TransferScreen
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.viewmodel.TransferViewModel
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.newExpenseScreen(
+fun NavGraphBuilder.transferScreen(
     onNavigateBack: () -> Unit
 ) {
-    composable(Screens.Expense.route) {
-        val viewModel: NewExpenseViewModel = koinViewModel()
+    composable(Screens.Transfer.route) {
+        val viewModel: TransferViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsState()
         val results by viewModel.result.collectAsState()
 
-        NewExpenseScreen(
+        TransferScreen(
             results,
             uiState, onNavigateBack
-        ) {
-            viewModel.newExpense()
-        }
+        ) {}
     }
 }

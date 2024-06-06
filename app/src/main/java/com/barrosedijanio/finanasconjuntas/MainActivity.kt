@@ -11,10 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.barrosedijanio.finanasconjuntas.core.navigation.Navigation
 import com.barrosedijanio.finanasconjuntas.ui.theme.FinançasConjuntasTheme
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             FinançasConjuntasTheme {
                 // A surface container using the 'background' color from the theme

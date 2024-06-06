@@ -13,9 +13,12 @@ import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.signUpSc
 import com.barrosedijanio.finanasconjuntas.core.components.FabAppDefault
 import com.barrosedijanio.finanasconjuntas.core.components.NavigationBarDefault
 import com.barrosedijanio.finanasconjuntas.home.presentation.navigation.homeScreen
+import com.barrosedijanio.finanasconjuntas.profile.presentation.navigation.profileScreen
 import com.barrosedijanio.finanasconjuntas.transactions.navigation.newExpenseScreen
 import com.barrosedijanio.finanasconjuntas.statement.presentation.navigation.statementScreen
 import com.barrosedijanio.finanasconjuntas.transactions.navigation.newIncomeScreen
+import com.barrosedijanio.finanasconjuntas.transactions.navigation.transferScreen
+import com.barrosedijanio.finanasconjuntas.wallet.navigation.walletScreen
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -39,7 +42,7 @@ fun Navigation() {
                 FabAppDefault(
                     onCreateNewIncome = { navController.navigate(Screens.Income.route) },
                     onCreateNewExpense = { navController.navigate(Screens.Expense.route) },
-                    onAccountTransfer = {})
+                    onAccountTransfer = { navController.navigate(Screens.Transfer.route) })
             }
         }
     ) {
@@ -56,15 +59,25 @@ fun Navigation() {
             signUpScreen {
                 navController.navigate(Screens.Home.route)
             }
-            homeScreen()
+            profileScreen(
+                onSignOutClick = {
+                    auth.signOut()
+                    navController.navigate(Screens.SignIn.route)
+                })
+            homeScreen {
+                navController.navigate(Screens.Profile.route)
+            }
             statementScreen()
-            newExpenseScreen{
+            newExpenseScreen {
                 navController.popBackStack()
             }
-            newIncomeScreen{
+            newIncomeScreen {
                 navController.popBackStack()
             }
+            transferScreen {
+                navController.popBackStack()
+            }
+            walletScreen()
         }
     }
-
 }

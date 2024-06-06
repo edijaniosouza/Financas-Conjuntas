@@ -5,6 +5,7 @@ import com.barrosedijanio.finanasconjuntas.auth.domain.di.firebaseAuthModule
 import com.barrosedijanio.finanasconjuntas.auth.domain.di.loginModule
 import com.barrosedijanio.finanasconjuntas.firebase.domain.di.firestoreModule
 import com.barrosedijanio.finanasconjuntas.home.domain.di.homeModule
+import com.barrosedijanio.finanasconjuntas.profile.domain.di.profileModule
 import com.barrosedijanio.finanasconjuntas.transactions.di.transactionsModule
 import com.barrosedijanio.finanasconjuntas.statement.domain.di.statementModule
 import org.koin.android.ext.koin.androidContext
@@ -24,7 +25,8 @@ class MyApplication : Application() {
                 firestoreModule,
                 loginModule,
                 statementModule,
-                transactionsModule
+                transactionsModule,
+                profileModule
             )
         }
     }

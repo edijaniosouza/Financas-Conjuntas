@@ -2,9 +2,12 @@ package com.barrosedijanio.finanasconjuntas.core.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -33,7 +36,16 @@ fun NavigationBarDefault(
                 icon = { Icon(imageVector = navItem.icon, contentDescription = null) },
                 label = {
                     Text(text = navItem.label)
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = Color.White,
+                    selectedIconColor = Color.Black,
+                    unselectedIconColor = Color.Black,
+                    selectedTextColor = Color.Black,
+                    unselectedTextColor = Color.Red,
+                ),
+                alwaysShowLabel = false,
+
             )
         }
     }

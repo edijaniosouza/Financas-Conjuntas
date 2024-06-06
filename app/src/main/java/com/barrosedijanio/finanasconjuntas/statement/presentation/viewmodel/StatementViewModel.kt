@@ -18,16 +18,44 @@ class StatementViewModel(
     private var _transactions = MutableStateFlow<List<Transaction>>(emptyList())
     var transactions = _transactions.asStateFlow()
 
-    init {
-        getTransactions()
-    }
-    private fun getTransactions() {
+    fun getTransactions() {
         viewModelScope.launch {
-            Log.i(FIREBASEDATA, "getTransactions: fora do alltransactions")
-
-            repository.allTransactions().collectLatest{
+            repository.allTransactions().collectLatest {
                 _transactions.value = it
-                Log.i(FIREBASEDATA, "getTransactions: $it")
+            }
+        }
+    }
+
+    fun getTransactionByFilter(filter: String) {
+
+        viewModelScope.launch {
+            when (filter) {
+                "Entradas" -> {
+                    repository.getTransactionByType(true).collectLatest {
+                        _transactions.value = it
+                    }
+                }
+                "Saídas" -> {
+                    repository.getTransactionByType(false).collectLatest {
+                        _transactions.value = it
+                    }
+                }
+                "30 dias" ->{
+                    repository.getTransactionByPeriod(30).collectLatest {
+                        _transactions.value = it
+                    }
+                }
+                "60 dias" -> {
+                    repository.getTransactionByPeriod(60).collectLatest {
+                        _transactions.value = it
+                    }
+                }
+                "90 dias" -> {
+                    repository.getTransactionByPeriod(90).collectLatest {
+                        _transactions.value = it
+                    }
+                }
+                else -> {}
             }
         }
     }

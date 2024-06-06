@@ -98,8 +98,11 @@ class SignInViewModel(
 
         viewModelScope.launch {
             authRepositoryImpl.signInWithGoogle(context) { response, user ->
+                Log.i("firebaseAuth", "signInWithGoogle: response: $response ; user: $user")
                 when (response) {
                     is Result.OK -> {
+                        Log.i("firebaseAuth", "signInWithGoogle - Dentro: response: $response ; user: $user")
+
                         _uiState.update { it.copy(isLoading = false) }
                         if (user != null) {
                                     User(

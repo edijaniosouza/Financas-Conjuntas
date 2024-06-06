@@ -29,12 +29,7 @@ fun TextFieldDropDownAppDefault(
     onDismissRequest: () -> Unit,
     selectedOption: String,
     list: Map<Int, String>,
-    leadingIcon: @Composable (() -> Unit) = {
-        Icon(
-            Icons.Filled.ArrowBack,
-            contentDescription = null
-        )
-    },
+    leadingIcon: @Composable (() -> Unit),
     onSelectMenuItem: (Int, String) -> Unit,
 ) {
     Column(

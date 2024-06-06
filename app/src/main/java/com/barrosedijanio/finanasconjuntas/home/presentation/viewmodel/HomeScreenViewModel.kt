@@ -4,14 +4,12 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barrosedijanio.finanasconjuntas.R
-import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
-import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
-import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Balance
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
+import com.barrosedijanio.finanasconjuntas.home.data.TotalBalanceModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -26,13 +24,20 @@ class HomeScreenViewModel(
 
     private var _list = MutableStateFlow<List<Transaction>>(listOf())
     var list = _list.asStateFlow()
-    fun readData() {
-        try {
-//            databaseRepo.allTransactions { list ->
-//                _list.value = list
-//                Log.i("firebaseData", "viewmodel - readData: ${_list.value}")
-//            }
 
+    private var _balance = MutableStateFlow<TotalBalanceModel>(TotalBalanceModel())
+    var balance = _balance.asStateFlow()
+
+    init {
+        loadBalance()
+    }
+    fun loadBalance() {
+        try {
+            viewModelScope.launch {
+                balanceRepo.getTotalBalance().collect{
+                    _balance.value = it
+                }
+            }
         } catch (e: Exception) {
             Log.e("firebaseError", "viewmodel - readData: ${e.message}")
         }
@@ -40,7 +45,7 @@ class HomeScreenViewModel(
 
     fun getAccountBalance() {
         viewModelScope.launch {
-            balanceRepo.getBalance(AccountType.CARTEIRA) {}
+            balanceRepo.getBalanceByAccount(AccountType.CARTEIRA) {}
         }
     }
 

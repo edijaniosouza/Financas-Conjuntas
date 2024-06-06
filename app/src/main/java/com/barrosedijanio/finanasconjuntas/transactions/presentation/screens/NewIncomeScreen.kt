@@ -25,6 +25,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerFormatter
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -98,6 +99,7 @@ fun NewIncomeScreen(
             }
         }
     }
+
 
     val dateState = rememberDatePickerState()
 
@@ -184,7 +186,9 @@ fun NewIncomeScreen(
                 }
 
                 Row(
-                    modifier = Modifier.weight(0.3f).padding(start = 10.dp),
+                    modifier = Modifier
+                        .weight(0.3f)
+                        .padding(start = 10.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
@@ -233,7 +237,7 @@ fun NewIncomeScreen(
                     dismissButton = {
                         Button(
                             onClick = {
-                                dateState.setSelection(null)
+                                dateState.selectedDateMillis = null
                                 openDatePicker = false
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -260,7 +264,7 @@ fun NewIncomeScreen(
                             )
                         },
                         showModeToggle = true,
-                        dateFormatter = DatePickerFormatter(
+                        dateFormatter = DatePickerDefaults.dateFormatter(
                             selectedDateSkeleton = "dd,MM,yyyy",
                             yearSelectionSkeleton = "MM, yyyy",
                             selectedDateDescriptionSkeleton = "dd, MM, yyyy"
@@ -377,7 +381,7 @@ fun NewIncomeScreen(
                 }
 
                 dateState.selectedDateMillis?.let {
-                    uiState.onPaymentDateChange(millisecondsToTimestamp(it))
+                    uiState.onPaymentDateChange(it)
                 }
                 onConfirmClick()
             },

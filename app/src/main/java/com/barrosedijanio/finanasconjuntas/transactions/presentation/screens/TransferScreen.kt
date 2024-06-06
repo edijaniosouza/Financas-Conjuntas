@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -56,22 +55,20 @@ import com.barrosedijanio.finanasconjuntas.R
 import com.barrosedijanio.finanasconjuntas.core.components.TextFieldTransparent
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
-import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.components.TextFieldDropDownAppDefault
-import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.ExpenseUiState
+import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.TransferUiState
 import com.barrosedijanio.finanasconjuntas.transactions.util.millisecondsToDateString
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 import com.barrosedijanio.finanasconjuntas.ui.theme.robotoFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewExpenseScreen(
+fun TransferScreen(
     results: Result,
-    uiState: ExpenseUiState,
+    uiState: TransferUiState,
     onNavigateBackClick: () -> Unit,
     onConfirmClick: () -> Unit,
 ) {
-
     LaunchedEffect(key1 = results) {
         when (results) {
             Result.Empty -> {}
@@ -88,6 +85,7 @@ fun NewExpenseScreen(
         }
     }
 
+
     val dateState = rememberDatePickerState()
 
     Column(
@@ -98,7 +96,7 @@ fun NewExpenseScreen(
         CenterAlignedTopAppBar(
             title = {
                 Text(
-                    "Nova Despesa",
+                    "Transferência entre contas",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = robotoFontFamily,
@@ -155,7 +153,7 @@ fun NewExpenseScreen(
                                 textAlign = TextAlign.Center
                             )
                         },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         textStyle = TextStyle(
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Bold,
@@ -171,29 +169,12 @@ fun NewExpenseScreen(
                         )
                     )
                 }
-
-                Row(
-                    modifier = Modifier.weight(0.3f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Text(
-                        text = "Pago",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        fontFamily = openSansFontFamily
-                    )
-                    Checkbox(
-                        checked = uiState.isPaid,
-                        onCheckedChange = { uiState.onPaidChange(it) })
-                }
             }
 
             TextFieldTransparent(
                 value = uiState.description,
                 placeholder = "Descrição",
                 onValueChange = { uiState.onDescriptionChange(it) })
-
 
             var openDatePicker by rememberSaveable { mutableStateOf(false) }
             var dateChoisen by rememberSaveable { mutableStateOf("") }
@@ -206,7 +187,7 @@ fun NewExpenseScreen(
                     openDatePicker = !openDatePicker
                 },
                 value = dateChoisen,
-                placeholder = "Data do pagamento",
+                placeholder = "Data da transferência",
                 enable = false,
                 leadingIcon = {
                     Icon(
@@ -258,35 +239,11 @@ fun NewExpenseScreen(
 
                 }
             }
-            val categories = mapOf(1 to "casa", 2 to "aluguel", 3 to "comida")
-
-            TextFieldDropDownAppDefault(
-                label = "Categoria",
-                uiState.categoryDropdownExpanded,
-                onExpanded = {
-                    uiState.onCategoryDropdownExpandedChange(!uiState.categoryDropdownExpanded)
-                },
-                onDismissRequest = {
-                    uiState.onCategoryDropdownExpandedChange(false)
-                },
-                uiState.category.name,
-                categories,
-                onSelectMenuItem = { _, value ->
-                    uiState.onCategoryChange(
-                        Category(value, 0)
-                    )
-                    uiState.onCategoryDropdownExpandedChange(false)
-                },
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_category_24),
-                        contentDescription = "Categoria"
-                    )
-                }
-            )
-
 
             val accounts = AccountType.entries.associate {
+                it.ordinal to it.name
+            }
+            val accounts2 = AccountType.entries.associate {
                 it.ordinal to it.name
             }
 
@@ -317,6 +274,46 @@ fun NewExpenseScreen(
                 }
             )
 
+            Column(
+                modifier = Modifier.padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("DE")
+                Spacer(modifier = Modifier.padding(10.dp))
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_repeat_24),
+                    contentDescription = "transferencia"
+                )
+                Spacer(modifier = Modifier.padding(10.dp))
+                Text("PARA")
+            }
+
+            TextFieldDropDownAppDefault(
+                label = "Conta Creditada",
+                uiState.accountTransferDropdownExpanded,
+                onExpanded = {
+                    uiState.onAccountTransferDropdownExpandedChange(!uiState.accountDropdownExpanded)
+                },
+                onDismissRequest = {
+                    uiState.onAccountTransferDropdownExpandedChange(false)
+                },
+                uiState.accountTransfer.name,
+                accounts2,
+                onSelectMenuItem = { _, value ->
+                    uiState.onAccountTransferChange(
+                        AccountType.valueOf(value)
+                    )
+
+                    uiState.onAccountTransferDropdownExpandedChange(false)
+
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_wallet_24),
+                        contentDescription = "Conta"
+                    )
+                }
+            )
 
             TextFieldTransparent(
                 modifier = Modifier.clickable {
@@ -353,20 +350,21 @@ fun NewExpenseScreen(
                 fontFamily = openSansFontFamily
             )
         }
+
         val context = LocalContext.current
         Button(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(30.dp),
             onClick = {
-                if (uiState.description == "" && uiState.value == "" && uiState.category.name == "") {
+                if (uiState.description == "" || uiState.value == "") {
                     Toast.makeText(context, "Preencha os campos obrigatórios", Toast.LENGTH_SHORT)
                         .show()
                     return@Button
                 }
 
                 dateState.selectedDateMillis?.let {
-                    uiState.onPaymentDateChange(it)
+                    uiState.onTransferDateChange(it)
                 }
                 onConfirmClick()
             },
@@ -380,7 +378,7 @@ fun NewExpenseScreen(
             if (uiState.loading) CircularProgressIndicator()
             else {
                 Text(
-                    "Adicionar",
+                    "Transferir",
                     fontSize = 20.sp,
                     fontFamily = robotoFontFamily,
                     fontWeight = FontWeight.SemiBold,
@@ -389,5 +387,4 @@ fun NewExpenseScreen(
             }
         }
     }
-
 }

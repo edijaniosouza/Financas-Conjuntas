@@ -8,6 +8,8 @@ interface TransactionRepository {
 
     fun newTransaction(transaction: Transaction ): Flow<Result>
     suspend fun allTransactions() : Flow<List<Transaction>>
+    suspend fun getTransactionByType(isIncome: Boolean): Flow<List<Transaction>>
+    suspend fun getTransactionByPeriod(period: Long): Flow<List<Transaction>>
     suspend fun updateTransaction(transaction: Transaction)
     suspend fun deleteTransaction(transaction: Transaction)
 }

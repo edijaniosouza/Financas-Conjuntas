@@ -16,4 +16,10 @@
     <string name="confirmPassword">Confirme sua senha</string>
     <string name="nameTooShort">Nome muito curto</string>
     <string name="web_client_id">30960615747-jhd0698ts1io8cco99naicb02ddsaubk.apps.googleusercontent.com</string>
+    <string name="lasts_transactions">Últimas movimentações</string>
+    <string name="no_transactions">Não há movimentações</string>
+    <string name="balance">Saldo</string>
+    <string name="shared">COMPARTILHADO</string>
+    <string name="incomes">RECEITAS</string>
+    <string name="expenses">DESPESAS</string>
 </resources>
