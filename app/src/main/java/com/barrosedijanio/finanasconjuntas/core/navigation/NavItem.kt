@@ -40,6 +40,9 @@ val listOfNonNavItems =
     listOf(
         Screens.SignIn.route,
         Screens.SignUp.route,
+        Screens.NewPassword.route,
+        Screens.VerficationCode.route,
+        Screens.ForgotPassword.route,
         Screens.Expense.route,
         Screens.Income.route,
         Screens.Profile.route,

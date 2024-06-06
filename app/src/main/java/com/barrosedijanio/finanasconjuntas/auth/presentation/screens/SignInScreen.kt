@@ -3,7 +3,6 @@ package com.barrosedijanio.finanasconjuntas.auth.presentation.screens
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,16 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -30,7 +26,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,11 +36,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.InputValidResult
 import com.barrosedijanio.finanasconjuntas.auth.presentation.components.InputTextFieldDefault
+import com.barrosedijanio.finanasconjuntas.auth.presentation.components.LogoImage
 import com.barrosedijanio.finanasconjuntas.auth.presentation.states.SignInUiState
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 import com.barrosedijanio.finanasconjuntas.ui.theme.robotoFontFamily
-import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.InputValidResult
 
 @Composable
 fun SignInScreen(
@@ -61,15 +57,7 @@ fun SignInScreen(
             .padding(horizontal = 25.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Image(
-            modifier = Modifier
-                .padding(40.dp)
-                .size(120.dp)
-                .clip(shape = CircleShape)
-                .background(Color(0xFFD9D9D9)),
-            imageVector = Icons.Default.Person,
-            contentDescription = "Logo"
-        )
+        LogoImage()
         Text(
             text = stringResource(R.string.enter),
             fontWeight = FontWeight.Bold,
@@ -244,6 +232,8 @@ fun SignInScreen(
         }
     }
 }
+
+
 
 
 

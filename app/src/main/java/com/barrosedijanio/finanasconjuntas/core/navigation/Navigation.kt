@@ -8,8 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.forgotPasswordScreen
+import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.newPasswordScreen
 import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.signInScreen
 import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.signUpScreen
+import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.verificationCodeScreen
 import com.barrosedijanio.finanasconjuntas.core.components.FabAppDefault
 import com.barrosedijanio.finanasconjuntas.core.components.NavigationBarDefault
 import com.barrosedijanio.finanasconjuntas.home.presentation.navigation.homeScreen
@@ -55,9 +58,30 @@ fun Navigation() {
                 goToHome = {
                     navController.navigate(Screens.Home.route)
                 },
-                goToCreateAccount = { navController.navigate(Screens.SignUp.route) })
+                goToCreateAccount = { navController.navigate(Screens.SignUp.route) },
+
+                goToResetPassword = {
+                    navController.navigate(Screens.ForgotPassword.route)
+                }
+            )
             signUpScreen {
                 navController.navigate(Screens.Home.route)
+            }
+            forgotPasswordScreen(goToVerificationCode = {navController.navigate(Screens.VerficationCode.route)}) {
+                navController.navigate(Screens.SignIn.route)
+            }
+
+            verificationCodeScreen(
+                goToNewPassword = {navController.navigate(Screens.NewPassword.route)}
+            ) {
+                navController.navigate(Screens.SignIn.route)
+            }
+            newPasswordScreen(
+                goToHome = {
+//                    navController.navigate(Screens.Home.route)
+                }
+            ) {
+                navController.navigate(Screens.SignIn.route)
             }
             profileScreen(
                 onSignOutClick = {

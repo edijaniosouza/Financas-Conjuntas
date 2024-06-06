@@ -22,4 +22,13 @@
     <string name="shared">COMPARTILHADO</string>
     <string name="incomes">RECEITAS</string>
     <string name="expenses">DESPESAS</string>
+    <string name="insert_your_email_to_reset_password">INSIRA SEU E-MAIL PARA RESETAR SUA SENHA</string>
+    <string name="cancel">Cancelar</string>
+    <string name="insert_code_sent_to_your_email">INSIRA O CÓDIGO ENVIADO PARA SEU E-MAIL</string>
+    <string name="confirm">Confirmar</string>
+    <string name="reset_password">Resetar senha</string>
+    <string name="new_password">NOVA SENHA</string>
+    <string name="invalid_code">Código inválido</string>
+    <string name="code">Código</string>
+    <string name="code_should_have_only_numbers">O código deve conter apenas números</string>
 </resources>

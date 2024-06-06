@@ -44,6 +44,7 @@ import com.barrosedijanio.finanasconjuntas.R
 import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.InputValidResult
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
 import com.barrosedijanio.finanasconjuntas.auth.presentation.components.InputTextFieldDefault
+import com.barrosedijanio.finanasconjuntas.auth.presentation.components.LogoImage
 import com.barrosedijanio.finanasconjuntas.auth.presentation.states.SignUpUiState
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 import com.barrosedijanio.finanasconjuntas.ui.theme.robotoFontFamily
@@ -84,15 +85,7 @@ fun SignUpScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                modifier = Modifier
-                    .padding(40.dp)
-                    .size(120.dp)
-                    .clip(shape = CircleShape)
-                    .background(Color(0xFFD9D9D9)),
-                imageVector = Icons.Default.Person,
-                contentDescription = "Logo"
-            )
+            LogoImage()
             Text(
                 text = stringResource(R.string.enter),
                 fontWeight = FontWeight.Bold,

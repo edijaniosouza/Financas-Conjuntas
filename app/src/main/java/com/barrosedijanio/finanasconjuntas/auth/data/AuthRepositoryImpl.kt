@@ -86,10 +86,6 @@ class AuthRepositoryImpl(
         }
     }
 
-    fun insertUserIntoDatabase(user: FirebaseUser){
-
-    }
-
     override fun signOut() {
         firebaseAuth.signOut()
     }
