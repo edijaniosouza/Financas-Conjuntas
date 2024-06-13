@@ -94,22 +94,46 @@ class AccountBalanceRepositoryImpl(
         isShared: Boolean,
         accountType: AccountType
     ) {
-        getBalanceByAccount(accountType = accountType) {
-
+        getBalanceByAccount(accountType = accountType) { balance ->
             userIdDocument?.collection(BALANCE)?.document(accountType.name)?.set(
                 if (!isIncome) {
-                    it.copy(
-                        balance = it.balance - newValue,
-                        expenseBalance = it.expenseBalance + newValue
+                    balance.copy(
+                        balance = balance.balance - newValue,
+                        expenseBalance = balance.expenseBalance + newValue
                     )
                 } else {
-                    it.copy(
-                        balance = it.balance + newValue,
-                        incomeBalance = it.incomeBalance + newValue
+                    balance.copy(
+                        balance = balance.balance + newValue,
+                        incomeBalance = balance.incomeBalance + newValue
                     )
                 }
             )
         }
+    }
+
+    private fun updateBalanceWithoutDiscount(
+        newValue: Float,
+        isIncome: Boolean,
+        accountType: AccountType
+    ) {
+        getBalanceByAccount(accountType = accountType) { balance ->
+            userIdDocument?.collection(BALANCE)?.document(accountType.name)?.set(
+                if (!isIncome) {
+                    balance.copy(
+                        balance = balance.balance - newValue,
+                    )
+                } else {
+                    balance.copy(
+                        balance = balance.balance + newValue,
+                    )
+                }
+            )
+        }
+    }
+
+    fun transferValueBetweenAccounts(from: AccountType, to: AccountType, value: Float) {
+        updateBalanceWithoutDiscount(newValue = value, isIncome = false, accountType = from)
+        updateBalanceWithoutDiscount(newValue = value, isIncome = true, accountType = to)
     }
 
     override fun deleteBalance(balance: Balance) {

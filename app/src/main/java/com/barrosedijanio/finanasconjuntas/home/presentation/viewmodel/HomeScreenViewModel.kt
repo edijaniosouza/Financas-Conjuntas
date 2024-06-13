@@ -1,5 +1,6 @@
 package com.barrosedijanio.finanasconjuntas.home.presentation.viewmodel
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.home.data.TotalBalanceModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -28,11 +30,16 @@ class HomeScreenViewModel(
     private var _balance = MutableStateFlow<TotalBalanceModel>(TotalBalanceModel())
     var balance = _balance.asStateFlow()
 
+    private var _userUrl = MutableStateFlow<Uri>(Uri.EMPTY)
+    var userUrl = _userUrl.asStateFlow()
+
     init {
         loadBalance()
     }
     fun loadBalance() {
         try {
+            _userUrl.value = FirebaseAuth.getInstance().currentUser?.photoUrl ?: Uri.EMPTY
+
             viewModelScope.launch {
                 balanceRepo.getTotalBalance().collect{
                     _balance.value = it

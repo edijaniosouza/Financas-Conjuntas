@@ -1,9 +1,12 @@
 package com.barrosedijanio.finanasconjuntas.transactions.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
+import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
+import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.TransferUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class TransferViewModel(
-    private val repository: TransactionRepositoryImpl
+    private val accountRepository: AccountBalanceRepositoryImpl
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow(TransferUiState())
@@ -79,4 +82,15 @@ class TransferViewModel(
     private var _result = MutableStateFlow<Result>(Result.Empty)
     val result = _result.asStateFlow()
 
+    fun transferValueBetweenAccounts() {
+        try {
+            accountRepository.transferValueBetweenAccounts(
+                from = _uiState.value.account,
+                to = _uiState.value.accountTransfer,
+                value = _uiState.value.value.toFloat()
+            )
+        }catch (e: Exception){
+            Log.e("TransferViewModel", "transferValueBetweenAccounts: ${e.message}", )
+        }
+    }
 }

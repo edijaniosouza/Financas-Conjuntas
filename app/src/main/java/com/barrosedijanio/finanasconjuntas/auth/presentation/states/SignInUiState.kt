@@ -14,5 +14,7 @@ data class SignInUiState(
     val isPasswordVisible: Boolean = false,
     val onPasswordVisibleChange: (Boolean) -> Unit = {},
     val isLoading: Boolean = false,
-    val error: String? = null
+    val onLoadingChange: (Boolean) -> Unit = {},
+    val error: String? = null,
+    val onErrorChange: (String) -> Unit = {},
 )

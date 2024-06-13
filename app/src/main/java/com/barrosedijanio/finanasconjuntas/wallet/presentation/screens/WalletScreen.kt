@@ -37,7 +37,6 @@ fun WalletScreen() {
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        TopBarAppDefault(onProfileClick = { /*TODO*/ }, onNotificationClick = {})
         Row(
             Modifier
                 .fillMaxWidth()

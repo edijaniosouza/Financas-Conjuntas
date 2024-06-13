@@ -5,12 +5,13 @@ import com.barrosedijanio.finanasconjuntas.auth.presentation.viewmodel.NewPasswo
 import com.barrosedijanio.finanasconjuntas.auth.presentation.viewmodel.SignUpViewModel
 import com.barrosedijanio.finanasconjuntas.auth.presentation.viewmodel.SignInViewModel
 import com.barrosedijanio.finanasconjuntas.auth.presentation.viewmodel.VerificationCodeViewModel
+import com.barrosedijanio.finanasconjuntas.core.viewmodel.ConfigViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val loginModule = module {
     viewModel<SignInViewModel> {
-        SignInViewModel(get())
+        SignInViewModel(get(), get())
     }
     viewModel<SignUpViewModel> {
         SignUpViewModel(get())
@@ -21,6 +22,9 @@ val loginModule = module {
 
     viewModel<VerificationCodeViewModel> {
         VerificationCodeViewModel(get())
+    }
+    viewModel<ConfigViewModel> {
+        ConfigViewModel(get())
     }
 
     viewModel<NewPasswordViewModel> {

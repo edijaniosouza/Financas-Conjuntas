@@ -1,9 +1,7 @@
 package com.barrosedijanio.finanasconjuntas.firebase.data.transactions
 
-import android.util.Log
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
-import com.barrosedijanio.finanasconjuntas.firebase.data.balance.FIREBASEDATA
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction

@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -96,7 +97,7 @@ fun TransferScreen(
         CenterAlignedTopAppBar(
             title = {
                 Text(
-                    "Transferência entre contas",
+                    stringResource(R.string.transfer_between_accounts),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = robotoFontFamily,
@@ -173,7 +174,7 @@ fun TransferScreen(
 
             TextFieldTransparent(
                 value = uiState.description,
-                placeholder = "Descrição",
+                placeholder = stringResource(R.string.description),
                 onValueChange = { uiState.onDescriptionChange(it) })
 
             var openDatePicker by rememberSaveable { mutableStateOf(false) }
@@ -187,7 +188,7 @@ fun TransferScreen(
                     openDatePicker = !openDatePicker
                 },
                 value = dateChoisen,
-                placeholder = "Data da transferência",
+                placeholder = stringResource(R.string.transfer_date),
                 enable = false,
                 leadingIcon = {
                     Icon(

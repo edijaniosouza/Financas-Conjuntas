@@ -28,7 +28,6 @@ import co.yml.charts.ui.piechart.charts.PieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
 import co.yml.charts.ui.piechart.models.PieChartData
 import com.barrosedijanio.finanasconjuntas.R
-import com.barrosedijanio.finanasconjuntas.core.components.TopBarAppDefault
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import com.barrosedijanio.finanasconjuntas.home.data.TotalBalanceModel
@@ -40,8 +39,6 @@ import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 @Composable
 fun HomeScreen(
     balance: TotalBalanceModel,
-    onProfileClick: () -> Unit,
-    onNotificationClick: () -> Unit,
 ) {
     Column(
         Modifier
@@ -52,12 +49,7 @@ fun HomeScreen(
             Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            TopBarAppDefault(
-                onProfileClick = onProfileClick,
-                onNotificationClick = onNotificationClick
-            )
-
-            val balanceColor = if(balance.totalBalance < 0f) Color.Red else Color(0xFF4A3B2C)
+            val balanceColor = if (balance.totalBalance < 0f) Color.Red else Color(0xFF4A3B2C)
             BalanceCard(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -223,7 +215,7 @@ fun HomeScreen(
                 )
             )
 
-            for(index in 0..4){
+            for (index in 0..4) {
                 StatementItem(list[index])
             }
 

@@ -31,4 +31,7 @@
     <string name="invalid_code">Código inválido</string>
     <string name="code">Código</string>
     <string name="code_should_have_only_numbers">O código deve conter apenas números</string>
+    <string name="transfer_between_accounts">Transferência entre contas</string>
+    <string name="description">Descrição</string>
+    <string name="transfer_date">Data da transferência</string>
 </resources>

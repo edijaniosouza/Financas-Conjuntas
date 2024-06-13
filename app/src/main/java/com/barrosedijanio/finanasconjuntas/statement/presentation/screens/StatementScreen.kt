@@ -1,5 +1,6 @@
 package com.barrosedijanio.finanasconjuntas.statement.presentation.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,11 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.imageLoader
 import com.barrosedijanio.finanasconjuntas.R
 import com.barrosedijanio.finanasconjuntas.core.components.TopBarAppDefault
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
@@ -38,8 +42,6 @@ fun StatementScreen(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        TopBarAppDefault({},{})
-
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -51,6 +53,10 @@ fun StatementScreen(
         )
         HorizontalDivider(Modifier.padding(15.dp))
         FilterStatement(onFilterClick = onFilterClick)
+
+        val ctx = LocalContext.current
+        val imageLoader = ctx.imageLoader
+        Log.i("imageLoader", "StatementScreen: ${imageLoader.components} // ${imageLoader.memoryCache} // ${imageLoader.diskCache}")
 
         if (transactions.isEmpty()) {
             Column (

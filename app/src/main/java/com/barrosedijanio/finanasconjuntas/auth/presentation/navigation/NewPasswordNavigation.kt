@@ -18,6 +18,10 @@ fun NavGraphBuilder.newPasswordScreen(
         val viewModel: NewPasswordViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsState()
 
-        NewPasswordScreen(uiState = uiState, onNewPassword = { goToHome() }, onCancel = onCancel)
+        NewPasswordScreen(
+            uiState = uiState,
+            onNewPassword = {
+//            goToHome()
+        }, onCancel = onCancel)
     }
 }

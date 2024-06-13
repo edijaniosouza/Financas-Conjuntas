@@ -1,9 +1,10 @@
 package com.barrosedijanio.finanasconjuntas.profile.presentation.screens
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,11 +18,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,11 +35,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
+    profilePhoto: Uri,
     onSignOutClick: () -> Unit
 ) {
     Column(
@@ -53,13 +54,22 @@ fun ProfileScreen(
         Box(
             Modifier.padding(vertical = 50.dp)
         ) {
-            Image(
-                modifier = Modifier
+
+            if (profilePhoto != Uri.EMPTY) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(156.dp)
+                        .clip(CircleShape),
+                    model = profilePhoto,
+                    contentDescription = "foto de perfil"
+                )
+            } else {
+                Icon(modifier = Modifier
                     .size(156.dp)
                     .clip(CircleShape),
-                imageVector = Icons.Default.Person,
-                contentDescription = "Foto de perfil"
-            )
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null)
+            }
 
             IconButton(
                 modifier = Modifier
@@ -119,7 +129,8 @@ fun ProfileScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextButton(onClick = { /*TODO*/ },
+            TextButton(
+                onClick = { /*TODO*/ },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Black
@@ -132,11 +143,13 @@ fun ProfileScreen(
                     fontWeight = FontWeight.SemiBold
                 )
             }
-            TextButton(onClick = { /*TODO*/ },
+            TextButton(
+                onClick = { /*TODO*/ },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Black
-                )) {
+                )
+            ) {
                 Text(
                     "Configurações",
                     fontSize = 24.sp,
@@ -145,11 +158,13 @@ fun ProfileScreen(
                 )
             }
             Spacer(modifier = Modifier.padding(15.dp))
-            TextButton(onClick = { onSignOutClick() },
+            TextButton(
+                onClick = { onSignOutClick() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent,
                     contentColor = Color.Black
-                )) {
+                )
+            ) {
                 Text(
                     "Sair",
                     fontSize = 14.sp,

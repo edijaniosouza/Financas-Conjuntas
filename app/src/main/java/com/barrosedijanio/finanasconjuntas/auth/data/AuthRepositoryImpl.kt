@@ -89,4 +89,8 @@ class AuthRepositoryImpl(
     override fun signOut() {
         firebaseAuth.signOut()
     }
+
+    fun sendPasswordResetEmail(email: String){
+        firebaseAuth.sendPasswordResetEmail(email)
+    }
 }

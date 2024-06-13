@@ -1,8 +1,11 @@
 package com.barrosedijanio.finanasconjuntas.core.navigation
 
+import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -15,6 +18,8 @@ import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.signUpSc
 import com.barrosedijanio.finanasconjuntas.auth.presentation.navigation.verificationCodeScreen
 import com.barrosedijanio.finanasconjuntas.core.components.FabAppDefault
 import com.barrosedijanio.finanasconjuntas.core.components.NavigationBarDefault
+import com.barrosedijanio.finanasconjuntas.core.components.TopBarAppDefault
+import com.barrosedijanio.finanasconjuntas.firebase.data.config.USER_CONFIG
 import com.barrosedijanio.finanasconjuntas.home.presentation.navigation.homeScreen
 import com.barrosedijanio.finanasconjuntas.profile.presentation.navigation.profileScreen
 import com.barrosedijanio.finanasconjuntas.transactions.navigation.newExpenseScreen
@@ -34,7 +39,18 @@ fun Navigation() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route
+    val profilePhotoUrl = auth.currentUser?.photoUrl
+
     Scaffold(
+        topBar = {
+            if (currentRoute !in listOfNonNavItems) {
+                TopBarAppDefault(
+                    onProfileClick = { navController.navigate(Screens.Profile.route) },
+                    onNotificationClick = { /*TODO*/ },
+                    photoUrl = profilePhotoUrl
+                )
+            }
+        },
         bottomBar = {
             if (currentRoute !in listOfNonNavItems) {
                 NavigationBarDefault(currentDestination, navController)
@@ -67,12 +83,12 @@ fun Navigation() {
             signUpScreen {
                 navController.navigate(Screens.Home.route)
             }
-            forgotPasswordScreen(goToVerificationCode = {navController.navigate(Screens.VerficationCode.route)}) {
+            forgotPasswordScreen {
                 navController.navigate(Screens.SignIn.route)
             }
 
             verificationCodeScreen(
-                goToNewPassword = {navController.navigate(Screens.NewPassword.route)}
+                goToNewPassword = { navController.navigate(Screens.NewPassword.route) }
             ) {
                 navController.navigate(Screens.SignIn.route)
             }
@@ -83,14 +99,15 @@ fun Navigation() {
             ) {
                 navController.navigate(Screens.SignIn.route)
             }
+
             profileScreen(
+
+                profilePhoto = profilePhotoUrl ?: Uri.EMPTY,
                 onSignOutClick = {
                     auth.signOut()
                     navController.navigate(Screens.SignIn.route)
                 })
-            homeScreen {
-                navController.navigate(Screens.Profile.route)
-            }
+            homeScreen()
             statementScreen()
             newExpenseScreen {
                 navController.popBackStack()

@@ -1,5 +1,6 @@
 package com.barrosedijanio.finanasconjuntas.transactions.presentation.screens
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -59,6 +60,7 @@ import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Category
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.components.TextFieldDropDownAppDefault
 import com.barrosedijanio.finanasconjuntas.transactions.presentation.states.ExpenseUiState
+import com.barrosedijanio.finanasconjuntas.transactions.util.convertToBrazilianCurrency
 import com.barrosedijanio.finanasconjuntas.transactions.util.millisecondsToDateString
 import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 import com.barrosedijanio.finanasconjuntas.ui.theme.robotoFontFamily
@@ -142,8 +144,8 @@ fun NewExpenseScreen(
 
                     TextField(
                         value = uiState.value,
-                        onValueChange = {
-                            uiState.onValueChange(it)
+                        onValueChange = {newValue ->
+                            uiState.onValueChange(newValue)
                         },
                         placeholder = {
                             Text(

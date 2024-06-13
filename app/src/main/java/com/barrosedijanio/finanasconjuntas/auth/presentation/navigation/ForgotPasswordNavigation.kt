@@ -10,17 +10,18 @@ import com.barrosedijanio.finanasconjuntas.core.navigation.Screens
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.forgotPasswordScreen(
-    goToVerificationCode: () -> Unit,
-    onCancel: () -> Unit,
+    goToSignIn: () -> Unit,
 ) {
     composable(Screens.ForgotPassword.route) {
-        val viewModel : ForgotPasswordViewModel = koinViewModel()
+        val viewModel: ForgotPasswordViewModel = koinViewModel()
         val uiState by viewModel.uiState.collectAsState()
 
         ForgotPasswordScreen(
             uiState = uiState,
             onResetPassword = {
-            goToVerificationCode()
-        }, onCancel = onCancel)
+                viewModel.sendPasswordResetEmail()
+                goToSignIn()
+            }, onCancel = goToSignIn
+        )
     }
 }

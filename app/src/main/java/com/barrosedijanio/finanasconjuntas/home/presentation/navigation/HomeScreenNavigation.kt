@@ -12,16 +12,16 @@ import com.barrosedijanio.finanasconjuntas.home.presentation.viewmodel.HomeScree
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.homeScreen(
-    onProfileClick: () -> Unit,
 ) {
     composable(Screens.Home.route) {
         val viewModel: HomeScreenViewModel = koinViewModel()
         val balance by viewModel.balance.collectAsState()
+        val userUrl by viewModel.userUrl.collectAsState()
 
         val lifecycleOwner = LocalLifecycleOwner.current
         LaunchedEffect(key1 = lifecycleOwner) {
             viewModel.loadBalance()
         }
-        HomeScreen(balance, onProfileClick = onProfileClick, {})
+        HomeScreen(balance)
     }
 }

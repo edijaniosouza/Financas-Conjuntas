@@ -7,22 +7,28 @@ import androidx.lifecycle.viewModelScope
 import com.barrosedijanio.finanasconjuntas.R
 import com.barrosedijanio.finanasconjuntas.auth.domain.model.User
 import com.barrosedijanio.finanasconjuntas.auth.data.AuthRepositoryImpl
+import com.barrosedijanio.finanasconjuntas.auth.domain.model.AuthResult
 import com.barrosedijanio.finanasconjuntas.auth.presentation.states.SignInUiState
 import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.emailValidation
 import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.InputValidResult
 import com.barrosedijanio.finanasconjuntas.core.generics.Result
+import com.barrosedijanio.finanasconjuntas.firebase.data.config.ConfigRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SignInViewModel(
-    private val authRepositoryImpl: AuthRepositoryImpl
+    private val authRepositoryImpl: AuthRepositoryImpl,
+    private val configRepository: ConfigRepository
 ) : ViewModel() {
 
     private var _uiState = MutableStateFlow(SignInUiState())
     var uiState = _uiState.asStateFlow()
 
+    private var _authState = MutableStateFlow<AuthResult>(AuthResult.Empty)
+    var authState = _authState.asStateFlow()
     init {
         _uiState.update { currentState ->
             currentState.copy(
@@ -48,7 +54,17 @@ class SignInViewModel(
                     _uiState.update {
                         it.copy(rememberMe = remember)
                     }
-                }
+                },
+                onLoadingChange = { loading ->
+                    _uiState.update {
+                        it.copy(isLoading = loading)
+                    }
+                },
+                onErrorChange = { error ->
+                    _uiState.update {
+                        it.copy(error = error)
+                    }
+                },
             )
         }
     }
@@ -69,23 +85,29 @@ class SignInViewModel(
         }
     }
 
-    fun signIn(email: String, password: String, onLoginSuccess: (User) -> Unit) {
+    fun signIn(email: String, password: String, remember: Boolean = false) {
         try {
+            _authState.value = AuthResult.Loading
             viewModelScope.launch {
+
                 val signIn = authRepositoryImpl.signInWithEmailAndPassword(email, password)
-                val user = signIn?.user?.let { firebaseUser ->
+                signIn?.user?.let { firebaseUser ->
                     User(
                         uid = firebaseUser.uid,
                         userEmail = firebaseUser.email!!,
                         username = firebaseUser.displayName!!,
                         profilePictureUrl = firebaseUser.photoUrl,
-                    )
+                    ).apply {
+                        configRepository.configNewUser(userId = this.uid!!, remember = remember)
+
+                        _authState.value = AuthResult.OK(this)
+                    }
+                } ?: run {
+                    _authState.value = AuthResult.Error("E-mail ou Senha inválidos")
                 }
-                onLoginSuccess(user!!)
-                Log.i("firebaseAuth", "signIn: ${signIn?.user?.displayName}")
             }
         } catch (e: Exception) {
-            Log.e("SignInViewModel", "signIn: ${e.message}")
+            _authState.value = AuthResult.Error("Erro inesperado ao fazer login")
         }
     }
 

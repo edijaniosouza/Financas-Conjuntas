@@ -39,6 +39,7 @@ class ForgotPasswordViewModel(
         return emailValidation(email)
     }
 
-    private val _result = MutableStateFlow<Result>(Result.Empty)
-    val responseResult = _result.asStateFlow()
+    fun sendPasswordResetEmail(){
+        authRepositoryImpl.sendPasswordResetEmail(_uiState.value.email)
+    }
 }

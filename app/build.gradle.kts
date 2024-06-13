@@ -80,5 +80,8 @@ dependencies {
     implementation(libs.googleid)
 
     //Graficos
-    implementation("co.yml:ycharts:2.1.0")
+    implementation(libs.ycharts)
+
+    // Carregamento de imagem
+    implementation(libs.coil.compose)
 }

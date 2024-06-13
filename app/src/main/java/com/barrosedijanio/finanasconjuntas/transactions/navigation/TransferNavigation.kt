@@ -20,6 +20,8 @@ fun NavGraphBuilder.transferScreen(
         TransferScreen(
             results,
             uiState, onNavigateBack
-        ) {}
+        ) {
+            viewModel.transferValueBetweenAccounts()
+        }
     }
 }

@@ -20,10 +20,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.auth.domain.model.AuthResult
 import com.barrosedijanio.finanasconjuntas.auth.domain.usercase.InputValidResult
 import com.barrosedijanio.finanasconjuntas.auth.presentation.components.InputTextFieldDefault
 import com.barrosedijanio.finanasconjuntas.auth.presentation.components.LogoImage
@@ -46,11 +49,34 @@ import com.barrosedijanio.finanasconjuntas.ui.theme.robotoFontFamily
 @Composable
 fun SignInScreen(
     uiState: SignInUiState,
+    authState: AuthResult,
     goToGoogleAuth: (context: Context) -> Unit,
-    goToHome: (email: String, password: String, remember: Boolean) -> Unit,
+    onLogin: (email: String, password: String, remember: Boolean) -> Unit,
+    goToHomeScreen: () -> Unit,
     goToResetPassword: (email: String) -> Unit,
     goToCreateAccount: () -> Unit
 ) {
+    LaunchedEffect(key1 = authState) {
+        when (authState) {
+            is AuthResult.OK -> {
+                uiState.onLoadingChange(false)
+                uiState.onErrorChange("")
+                goToHomeScreen()
+            }
+            is AuthResult.Error -> {
+                uiState.onLoadingChange(false)
+                uiState.onErrorChange(authState.errorMessage)
+            }
+            is AuthResult.Loading -> {
+                uiState.onLoadingChange(true)
+            }
+            is AuthResult.Empty -> {
+                uiState.onErrorChange("")
+                uiState.onLoadingChange(false)
+            }
+        }
+    }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -65,10 +91,6 @@ fun SignInScreen(
             fontFamily = robotoFontFamily
         )
 
-        if (!uiState.error.isNullOrEmpty()){
-            Text(uiState.error, fontSize = 18.sp, color = Color.Red)
-        }
-
         InputTextFieldDefault(
             value = uiState.email,
             onValueChange = uiState.onEmailChange,
@@ -77,7 +99,6 @@ fun SignInScreen(
             error = uiState.emailState
         )
 
-//        var isPasswordVisibility by remember { mutableStateOf(false) }
         InputTextFieldDefault(
             value = uiState.password,
             onValueChange = uiState.onPasswordChange,
@@ -91,36 +112,40 @@ fun SignInScreen(
             error = uiState.passwordState
         )
 
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 15.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = uiState.rememberMe, onCheckedChange = uiState.onRememberChange
-            )
-
-            TextButton(onClick = {
-                uiState.onRememberChange(!uiState.rememberMe)
-            }) {
-                Text(
-                    stringResource(R.string.rememberme),
-                    fontFamily = openSansFontFamily,
-                    fontSize = 15.sp,
-                    color = Color.Black
-                )
-            }
-        }
+//        Row(
+//            Modifier
+//                .fillMaxWidth()
+//                .padding(bottom = 15.dp),
+//            horizontalArrangement = Arrangement.Start,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Checkbox(
+//                checked = uiState.rememberMe, onCheckedChange = uiState.onRememberChange
+//            )
+//
+//            TextButton(onClick = {
+//                uiState.onRememberChange(!uiState.rememberMe)
+//            }) {
+//                Text(
+//                    stringResource(R.string.rememberme),
+//                    fontFamily = openSansFontFamily,
+//                    fontSize = 15.sp,
+//                    color = Color.Black
+//                )
+//            }
+//        }
         var btnEnable = false
         if (uiState.emailState == InputValidResult.Valid && uiState.passwordState == InputValidResult.Valid) {
             btnEnable = true
         }
 
+        if(!uiState.error.isNullOrEmpty()){
+            Text(uiState.error, fontSize = 18.sp, color = MaterialTheme.colorScheme.error)
+        }
+
         Button(
             onClick = {
-                goToHome(uiState.email, uiState.password, uiState.rememberMe)
+                onLogin(uiState.email, uiState.password, uiState.rememberMe)
             },
             Modifier
                 .fillMaxWidth(),
