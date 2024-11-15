@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.barrosedijanio.finanasconjuntas.R
+import com.barrosedijanio.finanasconjuntas.firebase.data.accountLink.AccountLinkRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.AccountType
@@ -18,11 +19,9 @@ import kotlinx.coroutines.launch
 
 class HomeScreenViewModel(
     private val databaseRepo: TransactionRepositoryImpl,
-    private val balanceRepo: AccountBalanceRepositoryImpl
+    private val balanceRepo: AccountBalanceRepositoryImpl,
+    private val linkRepo: AccountLinkRepository,
 ) : ViewModel() {
-
-//    private var _uiState = MutableStateFlow(HomeScreenUiState())
-//    var uiState = _uiState.asStateFlow()
 
     private var _list = MutableStateFlow<List<Transaction>>(listOf())
     var list = _list.asStateFlow()
@@ -36,11 +35,13 @@ class HomeScreenViewModel(
     init {
         loadBalance()
     }
+
     fun loadBalance() {
         try {
             _userUrl.value = FirebaseAuth.getInstance().currentUser?.photoUrl ?: Uri.EMPTY
 
             viewModelScope.launch {
+                linkRepo.getLinkAccount()
                 balanceRepo.getTotalBalance().collect{
                     _balance.value = it
                 }

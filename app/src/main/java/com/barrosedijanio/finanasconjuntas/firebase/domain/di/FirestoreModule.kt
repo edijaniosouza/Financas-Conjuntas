@@ -1,5 +1,6 @@
 package com.barrosedijanio.finanasconjuntas.firebase.domain.di
 
+import com.barrosedijanio.finanasconjuntas.firebase.data.accountLink.AccountLinkRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.balance.AccountBalanceRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.data.config.ConfigRepository
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
@@ -21,5 +22,9 @@ val firestoreModule = module {
 
     single <ConfigRepository>{
         ConfigRepository(get(), get())
+    }
+
+    single <AccountLinkRepository>{
+        AccountLinkRepository(get(), get())
     }
 }

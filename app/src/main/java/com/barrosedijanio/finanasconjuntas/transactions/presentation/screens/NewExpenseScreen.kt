@@ -83,7 +83,7 @@ fun NewExpenseScreen(
             }
 
             Result.Loading -> uiState.onLoadingChange(true)
-            Result.OK -> {
+            is Result.OK -> {
                 uiState.onLoadingChange(false)
                 onNavigateBackClick()
             }

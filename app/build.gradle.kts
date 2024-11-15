@@ -84,4 +84,5 @@ dependencies {
 
     // Carregamento de imagem
     implementation(libs.coil.compose)
+
 }

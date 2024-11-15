@@ -13,8 +13,6 @@ import kotlinx.coroutines.tasks.await
 
 const val BALANCE = "balance"
 
-const val FIREBASEDATA = "firebaseData"
-
 class AccountBalanceRepositoryImpl(
     firestore: FirebaseFirestore,
     auth: FirebaseAuth
@@ -45,6 +43,20 @@ class AccountBalanceRepositoryImpl(
                     onCompleteListener(result)
                 }
             }
+    }
+
+    private val linkCollection = firestore.collection("link")
+
+    suspend fun getLinkedAccounts(){
+        val linkedUsersDocument = linkCollection.document("LARXlIFhvssPrb42EPrr").get().await()
+        val linkedUsers = linkedUsersDocument.data?.get("users")
+        val convertedLinkedUsers = linkedUsers?.let {
+          it as List<*>
+        }
+
+        val b = mutableListOf(convertedLinkedUsers)
+
+        Log.i("linkSetup", "getLinkedAccounts: ${b}")
     }
 
     override fun getTotalBalance(): Flow<TotalBalanceModel> = flow {

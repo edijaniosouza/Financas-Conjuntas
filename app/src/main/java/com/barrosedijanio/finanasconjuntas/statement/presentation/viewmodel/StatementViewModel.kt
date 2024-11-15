@@ -3,7 +3,6 @@ package com.barrosedijanio.finanasconjuntas.statement.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.barrosedijanio.finanasconjuntas.firebase.data.balance.FIREBASEDATA
 import com.barrosedijanio.finanasconjuntas.firebase.data.transactions.TransactionRepositoryImpl
 import com.barrosedijanio.finanasconjuntas.firebase.domain.model.Transaction
 import kotlinx.coroutines.flow.MutableStateFlow

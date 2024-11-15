@@ -21,7 +21,6 @@ class AuthRepositoryImpl(
 ) : AuthRepository {
 
     override suspend fun signInWithGoogle(context: Context, onResult:(response: Result, user: FirebaseUser?) -> Unit){
-
         val credentialManager = CredentialManager.create(context)
 
         val googleIdOption = GetGoogleIdOption.Builder()
@@ -42,7 +41,7 @@ class AuthRepositoryImpl(
             firebaseAuth.signInWithCredential(firebaseCredential)
                 .addOnCompleteListener { task ->
                     if(task.isSuccessful){
-                        task.result.user?.let { onResult(Result.OK, it) }
+                        task.result.user?.let { onResult(Result.OK(), it) }
                     }
                 }
         }catch (e: Exception){
@@ -59,7 +58,6 @@ class AuthRepositoryImpl(
         onResult: (response: Result) -> Unit,
     ) {
         onResult(Result.Loading)
-
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val user = task.result.user
@@ -67,7 +65,7 @@ class AuthRepositoryImpl(
                     UserProfileChangeRequest.Builder().setDisplayName(username).build()
                 )?.addOnCompleteListener { updateTask ->
                     if (updateTask.isSuccessful)
-                        onResult(Result.OK)
+                        onResult(Result.OK())
                     else
                         updateTask.exception?.message?.let { onResult(Result.Error(it)) }!!
                 }

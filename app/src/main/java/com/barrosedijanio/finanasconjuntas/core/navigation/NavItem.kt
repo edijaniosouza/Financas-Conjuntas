@@ -1,38 +1,71 @@
 package com.barrosedijanio.finanasconjuntas.core.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.barrosedijanio.finanasconjuntas.R
 
 data class NavItem(
     val label: String,
-    val icon: ImageVector,
+    val icon: @Composable() (() -> Unit),
     val route: String
 )
 
 val listOfNavItems = listOf<NavItem>(
     NavItem(
         label = "Home",
-        icon = Icons.Default.Home,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Home,
+                contentDescription = null
+            )
+        },
         route = Screens.Home.route
     ),
     NavItem(
-        label = "Transactions",
-        icon = Icons.Default.List,
+        label = "Transações",
+        icon = {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.List,
+                contentDescription = null
+            )
+        },
         route = Screens.Statement.route
     ),
     NavItem(
         label = "Relatórios",
-        icon = Icons.Default.Star,
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_chart),
+                contentDescription = null
+            )
+        },
         route = Screens.Statement.route
     ),
     NavItem(
         label = "Carteira",
-        icon = Icons.Default.Warning,
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_wallet_24),
+                contentDescription = null
+            )
+        },
         route = Screens.Wallet.route
+    ),
+    NavItem(
+        label = "Perfil",
+        icon = {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = null
+            )
+        },
+        route = Screens.Profile.route
     ),
 )
 
@@ -48,3 +81,8 @@ val listOfNonNavItems =
         Screens.Profile.route,
         Screens.Transfer.route
     )
+
+@Composable
+fun tt(modifier: Modifier = Modifier) {
+    Icon(painter = painterResource(id = R.drawable.ic_chart), contentDescription = null)
+}

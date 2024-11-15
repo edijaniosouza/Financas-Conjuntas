@@ -9,15 +9,40 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.barrosedijanio.finanasconjuntas.R
 
+val robotoFontFamily = FontFamily(
+    Font(R.font.roboto_bold, FontWeight.Bold),
+    Font(R.font.roboto_black, FontWeight.Black),
+    Font(R.font.roboto_italic, FontWeight.Normal,FontStyle.Italic),
+    Font(R.font.roboto_regular, FontWeight.Normal),
+    Font(R.font.roboto_light, FontWeight.Light),
+    Font(R.font.roboto_thin, FontWeight.Thin),
+)
+
+val openSansFontFamily = FontFamily(
+    Font(R.font.opensans_regular, FontWeight.Normal),
+    Font(R.font.opensans_italic, FontWeight.Normal, FontStyle.Italic),
+    Font(R.font.opensans_bold, FontWeight.Bold),
+    Font(R.font.opensans_light, FontWeight.Light),
+    Font(R.font.opensans_medium, FontWeight.Medium),
+    Font(R.font.opensans_semibold, FontWeight.SemiBold),
+)
+
 // Set of Material typography styles to start with
 val Typography = Typography(
     bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = openSansFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
-    )
+    ),
+    titleLarge = TextStyle(
+    fontFamily = robotoFontFamily,
+    fontWeight = FontWeight.Normal,
+    fontSize = 20.sp,
+    lineHeight = 28.sp,
+    letterSpacing = 0.sp
+),
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -37,20 +62,3 @@ val Typography = Typography(
 )
 
 
-val robotoFontFamily = FontFamily(
-    Font(R.font.roboto_bold, FontWeight.Bold),
-    Font(R.font.roboto_black, FontWeight.Black),
-    Font(R.font.roboto_italic, FontWeight.Normal,FontStyle.Italic),
-    Font(R.font.roboto_regular, FontWeight.Normal),
-    Font(R.font.roboto_light, FontWeight.Light),
-    Font(R.font.roboto_thin, FontWeight.Thin),
-)
-
-val openSansFontFamily = FontFamily(
-    Font(R.font.opensans_regular, FontWeight.Normal),
-    Font(R.font.opensans_italic, FontWeight.Normal, FontStyle.Italic),
-    Font(R.font.opensans_bold, FontWeight.Bold),
-    Font(R.font.opensans_light, FontWeight.Light),
-    Font(R.font.opensans_medium, FontWeight.Medium),
-    Font(R.font.opensans_semibold, FontWeight.SemiBold),
-)

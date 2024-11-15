@@ -1,5 +1,6 @@
 package com.barrosedijanio.finanasconjuntas.home.presentation.screens
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,19 +11,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import co.yml.charts.common.model.PlotType
 import co.yml.charts.ui.piechart.charts.PieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
@@ -39,7 +48,16 @@ import com.barrosedijanio.finanasconjuntas.ui.theme.openSansFontFamily
 @Composable
 fun HomeScreen(
     balance: TotalBalanceModel,
+    link: Boolean
 ) {
+    var linkValue by remember { mutableStateOf(link) }
+    if(linkValue) {
+        AlertDialog(
+            title = { Text("LINK") },
+            onDismissRequest = { linkValue = !linkValue },
+            confirmButton = { /*TODO*/ })
+    }
+
     Column(
         Modifier
             .fillMaxSize()
@@ -160,13 +178,15 @@ fun HomeScreen(
             )
         }
 
+        val ctx = LocalContext.current
         ElevatedCard(
             modifier = Modifier
                 .padding(15.dp),
             colors = CardDefaults.cardColors(
                 containerColor = Color.White
             ),
-            onClick = { /*TODO*/ }
+            onClick = {
+            }
         ) {
             Text(
                 text = "ÚLTIMAS DESPESAS",

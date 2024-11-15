@@ -1,6 +1,9 @@
 package com.barrosedijanio.finanasconjuntas.profile.presentation.navigation
 
+import android.content.Intent
 import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.barrosedijanio.finanasconjuntas.core.navigation.Screens
@@ -15,6 +18,16 @@ fun NavGraphBuilder.profileScreen(
     composable(Screens.Profile.route) {
         val viewModel: ProfileViewModel = koinViewModel()
 
-        ProfileScreen(profilePhoto = profilePhoto,onSignOutClick)
+        val context = LocalContext.current
+        ProfileScreen(profilePhoto = profilePhoto, {
+            viewModel.setupLink { userId ->
+                val shareIntent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, "https://www.psiamandatheodoro.com/share?id=$userId")
+                    type = "text/plain"
+                }
+                startActivity(context, shareIntent, null)
+            }
+        },onSignOutClick)
     }
 }

@@ -64,8 +64,7 @@ class TransactionRepositoryImpl(
 
     override suspend fun getTransactionByType(isIncome: Boolean) = flow<List<Transaction>> {
         val transactions = mutableListOf<Transaction>()
-        val list =
-            userIdDocument?.collection(TRANSACTIONS)?.whereEqualTo("income", isIncome)?.get()
+        val list = userIdDocument?.collection(TRANSACTIONS)?.whereEqualTo("income", isIncome)?.get()
                 ?.await()
 
         list?.documents?.forEach {
@@ -111,7 +110,7 @@ class TransactionRepositoryImpl(
         try {
             userIdDocument
                 ?.collection(collection)?.add(model)?.await()
-            emit(Result.OK)
+            emit(Result.OK())
         } catch (e: CancellationException) {
             emit(e.message?.let { Result.Error(it) })
         }

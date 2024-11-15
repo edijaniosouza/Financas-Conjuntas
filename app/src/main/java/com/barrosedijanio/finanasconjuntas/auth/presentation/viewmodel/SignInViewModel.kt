@@ -98,7 +98,7 @@ class SignInViewModel(
                         username = firebaseUser.displayName!!,
                         profilePictureUrl = firebaseUser.photoUrl,
                     ).apply {
-                        configRepository.configNewUser(userId = this.uid!!, remember = remember)
+                        configRepository.configNewUser(user = this, remember = remember)
 
                         _authState.value = AuthResult.OK(this)
                     }
@@ -123,7 +123,7 @@ class SignInViewModel(
                 Log.i("firebaseAuth", "signInWithGoogle: response: $response ; user: $user")
                 when (response) {
                     is Result.OK -> {
-                        Log.i("firebaseAuth", "signInWithGoogle - Dentro: response: $response ; user: $user")
+                        Log.i("firebaseAuth", "signInWithGoogle - Dentro: ${user?.photoUrl}")
 
                         _uiState.update { it.copy(isLoading = false) }
                         if (user != null) {
